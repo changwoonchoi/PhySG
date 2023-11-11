@@ -11,6 +11,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--conf', type=str, default='')
+    parser.add_argument('--data_dir', type=str, default=None)
+    parser.add_argument('--split', type=str, default='train')
     parser.add_argument('--data_split_dir', type=str, default='')
     parser.add_argument('--gamma', type=float, default=1., help='inverse gamma correction coefficient')
 
@@ -46,6 +48,8 @@ if __name__ == '__main__':
         gpu = opt.gpu
 
     trainrunner = IDRTrainRunner(conf=opt.conf,
+                                 data_dir = opt.data_dir,
+                                 split=opt.split,
                                  data_split_dir=opt.data_split_dir,
                                  gamma=opt.gamma,
                                  geometry=opt.geometry,

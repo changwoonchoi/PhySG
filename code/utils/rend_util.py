@@ -21,7 +21,8 @@ def load_rgb(path):
 
 
 def load_mask(path):
-    alpha = imageio.imread(path, as_gray=True)
+    # alpha = imageio.imread(path, as_gray=True)
+    alpha = imageio.imread(path, mode="L")
     alpha = np.float32(alpha) / 255.
     object_mask = alpha > 0.5
 

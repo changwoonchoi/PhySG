@@ -27,10 +27,11 @@ class TensoIRDataset(torch.utils.data.Dataset):
     def __init__(self,
                  gamma,
                  instance_dir,
+                 data_dir,
                  train_cameras,
                  split='train'
                  ):
-        self.instance_dir = instance_dir
+        self.instance_dir = data_dir
         print('Creating dataset from: ', self.instance_dir)
         assert os.path.exists(self.instance_dir), "Data directory is empty"
 
@@ -55,7 +56,7 @@ class TensoIRDataset(torch.utils.data.Dataset):
         poses = np.array(poses)
         poses = poses.astype(np.float32)
         scale = 2.0
-        poses[..., 3] /= scale
+        poses[..., :3, 3] /= scale
         # mask_dir = os.path.join(self.instance_dir, 'mask')
         # mask_paths = sorted(utils.glob_imgs(mask_dir))
         print('Found # images: ', len(image_paths))

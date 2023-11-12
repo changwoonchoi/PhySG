@@ -51,8 +51,9 @@ def evaluate(**kwargs):
         model.cuda()
 
     eval_dataset = utils.get_class(conf.get_string('train.dataset_class'))(kwargs['gamma'],
-                                                                           kwargs['data_split_dir'],
-                                                                           train_cameras=False)
+                                                                           kwargs['data_dir'],
+                                                                           False,
+                                                                           kwargs['split'])
 
     eval_dataloader = torch.utils.data.DataLoader(eval_dataset,
                                                   batch_size=1,
@@ -300,7 +301,8 @@ def evaluate(**kwargs):
                 # np.save('{0}/sg_diffuse_albedo_{1}.npy'.format(images_dir, out_img_name), rgb_eval)
 
             else:
-                rgb_eval = clip_img(rgb_eval)
+                # save diffuse albedo with tonemapped values (identical setup with other baselines)
+                rgb_eval = clip_img(tonemap_img(rgb_eval))
                 img = Image.fromarray((rgb_eval * 255).astype(np.uint8))
                 img.save('{0}/sg_diffuse_albedo_{1}.png'.format(images_dir, out_img_name))
 
@@ -314,7 +316,7 @@ def evaluate(**kwargs):
                 # np.save('{0}/sg_diffuse_rgb_{1}.npy'.format(images_dir, out_img_name), rgb_eval)
 
             else:
-                rgb_eval = clip_img(rgb_eval)
+                rgb_eval = clip_img(tonemap_img(rgb_eval))
                 img = Image.fromarray((rgb_eval * 255).astype(np.uint8))
                 img.save('{0}/sg_diffuse_rgb_{1}.png'.format(images_dir, out_img_name))
 
@@ -328,7 +330,7 @@ def evaluate(**kwargs):
                 # np.save('{0}/sg_specular_rgb_{1}.npy'.format(images_dir, out_img_name), rgb_eval)
 
             else:
-                rgb_eval = clip_img(rgb_eval)
+                rgb_eval = clip_img(tonemap_img(rgb_eval))
                 img = Image.fromarray((rgb_eval * 255).astype(np.uint8))
                 img.save('{0}/sg_specular_rgb_{1}.png'.format(images_dir, out_img_name))
 
@@ -406,6 +408,8 @@ if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
     parser.add_argument('--conf', type=str, default='./confs/default.conf')
+    parser.add_argument('--data_dir', type=str, default=None)
+    parser.add_argument('--split', type=str, default='train')
     parser.add_argument('--data_split_dir', type=str, default='')
     parser.add_argument('--gamma', type=float, default=1., help='gamma correction coefficient')
 
@@ -441,6 +445,8 @@ if __name__ == '__main__':
 
     evaluate(conf=opt.conf,
              write_idr=opt.write_idr,
+             data_dir=opt.data_dir,
+             split=opt.split,
              gamma=opt.gamma,
              data_split_dir=opt.data_split_dir,
              expname=opt.expname,

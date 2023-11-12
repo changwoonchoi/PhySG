@@ -93,6 +93,7 @@ class IDRTrainRunner():
         print('Loading data ...')
 
         self.train_dataset = utils.get_class(self.conf.get_string('train.dataset_class'))(kwargs['gamma'],
+                                                                                          kwargs['data_split_dir'],
                                                                                           kwargs['data_dir'],
                                                                                           self.train_cameras,
                                                                                           kwargs['split'])
@@ -104,7 +105,7 @@ class IDRTrainRunner():
                                                             )
 
         self.plot_dataset = utils.get_class(self.conf.get_string('train.dataset_class'))(kwargs['gamma'],
-                                            kwargs['data_dir'], self.train_cameras, kwargs['split'])
+                                            kwargs['data_split_dir'], kwargs['data_dir'], self.train_cameras, kwargs['split'])
         # self.plot_dataset.return_single_img('rgb_000000.exr')
         self.plot_dataloader = torch.utils.data.DataLoader(self.plot_dataset,
                                                            batch_size=self.conf.get_int('plot.plot_nimgs'),

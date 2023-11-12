@@ -263,6 +263,7 @@ def render_with_sg(lgtSGs, specular_reflectance, roughness, diffuse_albedo, norm
     ret = {'sg_rgb': rgb,
            'sg_specular_rgb': specular_rgb,
            'sg_diffuse_rgb': diffuse_rgb,
-           'sg_diffuse_albedo': diffuse_albedo}
+           'sg_diffuse_albedo': diffuse_albedo,
+           'roughness': roughness,}
 
     return ret

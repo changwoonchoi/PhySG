@@ -140,7 +140,7 @@ def lift(x, y, z, intrinsics):
     y_lift = (y - cy.unsqueeze(-1)) / fy.unsqueeze(-1) * z
 
     # homogeneous
-    return torch.stack((x_lift, y_lift, z, torch.ones_like(z).cuda()), dim=-1)
+    return torch.stack((x_lift, -y_lift, -z, torch.ones_like(z).cuda()), dim=-1)
 
 def quat_to_rot(q):
     batch_size, _ = q.shape

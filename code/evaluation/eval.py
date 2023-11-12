@@ -51,6 +51,7 @@ def evaluate(**kwargs):
         model.cuda()
 
     eval_dataset = utils.get_class(conf.get_string('train.dataset_class'))(kwargs['gamma'],
+                                                                           kwargs['data_split_dir'],
                                                                            kwargs['data_dir'],
                                                                            False,
                                                                            kwargs['split'])
@@ -126,10 +127,7 @@ def evaluate(**kwargs):
     all_frames = []
     psnrs = []
     for data_index, (indices, model_input, ground_truth) in enumerate(eval_dataloader):
-        if eval_dataset.has_groundtruth:
-            out_img_name = os.path.basename(eval_dataset.image_paths[indices[0]])[:-4]
-        else:
-            out_img_name = '{}'.format(indices[0])
+        out_img_name = '{}'.format(indices[0])
 
         if len(kwargs['view_name']) > 0 and out_img_name != kwargs['view_name']:
             print('Skipping: ', out_img_name)

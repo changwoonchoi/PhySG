@@ -27,7 +27,9 @@ class SceneDataset(torch.utils.data.Dataset):
     def __init__(self,
                  gamma,
                  instance_dir,
-                 train_cameras
+                 data_dir,
+                 train_cameras,
+                 split=None
                  ):
         self.instance_dir = instance_dir
         print('Creating dataset from: ', self.instance_dir)
